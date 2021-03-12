@@ -34,6 +34,8 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "./vendor/bowser.min.js",
+              "./vendor/screenfull.min.js",
               "./node_modules/marzipano/dist/marzipano.js"
             ]
           },
@@ -96,6 +98,8 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "./vendor/bowser.min.js",
+              "./vendor/screenfull.min.js",
               "./node_modules/marzipano/dist/marzipano.js"
             ]
           }

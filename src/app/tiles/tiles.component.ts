@@ -1,38 +1,50 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as Marzipano from 'marzipano'
 
 @Component({
   selector: 'app-tiles',
-  template: '<div #pano class="pano" id="pano"></div>'
+  template: '<div #tiles id="tiles"></div>'
 })
 export class TilesComponent implements OnInit {
 
-  @ViewChild('pano') pano: ElementRef
-
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
 
-  ngAfterViewInit(): void {
+    const panoElement = document.querySelector('#tiles')
+    const viewer = new Marzipano.Viewer(panoElement, { stage: { progressive: true } })
 
-    const panoElement = this.pano.nativeElement
+    // Create source.
+    const source = Marzipano.ImageUrlSource.fromString("../../assets/tiles/{z}/{f}/{y}/{x}.jpg", {
+      cubeMapPreviewUrl: "../../assets/tiles/preview.jpg"
+    })
 
-    var viewerOpts = {
-      controls: {
-        mouseViewMode: 'drag'
+    // Create geometry.
+    const geometry = new Marzipano.CubeGeometry([
+      {
+        "tileSize": 256,
+        "size": 256,
+        "fallbackOnly": true
+      },
+      {
+        "tileSize": 512,
+        "size": 512
+      },
+      {
+        "tileSize": 512,
+        "size": 1024
       }
-    }
+    ])
 
-    const viewer = new Marzipano.Viewer(panoElement, viewerOpts)
+    // Create view.
+    const limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180, 120 * Math.PI / 180)
+    const view = new Marzipano.RectilinearView({
+      "pitch": 0,
+      "yaw": 0,
+      "fov": 1.5707963267948966
+    }, limiter)
 
-    const limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180)
-    const view = new Marzipano.RectilinearView({ yaw: Math.PI }, limiter);
-
-    const geometry = new Marzipano.EquirectGeometry([{ width: 4000 }])
-
-    const source = Marzipano.ImageUrlSource.fromString("../../assets/angra.jpg")
-    // var source = Marzipano.ImageUrlSource.fromString("../assets/tiles/pano/{z}/{y}/{x}.jpg")
-
+    // Create scene.
     const scene = viewer.createScene({
       source: source,
       geometry: geometry,
@@ -40,7 +52,7 @@ export class TilesComponent implements OnInit {
       pinFirstLevel: true
     })
 
+    // Display scene.
     scene.switchTo()
-
   }
 }
