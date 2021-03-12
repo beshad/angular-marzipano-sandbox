@@ -41,7 +41,7 @@ export class TilesComponent implements OnInit {
     const view = new Marzipano.RectilinearView({
       "pitch": 0,
       "yaw": 0,
-      "fov": 1.5707963267948966
+      "fov": .5707963267948966
     }, limiter)
 
     // Create scene.
