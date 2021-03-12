@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import * as Marzipano from 'marzipano'
 
 @Component({
@@ -12,24 +12,22 @@ export class TransitionComponent implements OnInit {
 
   @ViewChild('transition') transition: ElementRef
 
-  beforeSource
-  afterSource
-  beforeScene
-  afterScene
-  currentScene
-  beforeView
-  afterView
+  public beforeSource
+  public afterSource
+  public beforeScene
+  public afterScene
+  public currentScene
+  public beforeView
+  public afterView
 
-  yaw: number = 0
-  pitch: number = 0
-  fov: number = .5707963267948966
-
-  view
+  public yaw: number = 0
+  public pitch: number = 0
+  public fov: number = .5707963267948966
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
+
   ngAfterViewInit(): void {
 
     const panoElement = this.transition.nativeElement
@@ -92,26 +90,31 @@ export class TransitionComponent implements OnInit {
   }
 
 
-  nextScene = () => {
+  private readonly nextScene = () => {
     switch (this.currentScene) {
       case this.beforeScene:
-        this.afterScene.view().setPitch(this.beforeScene.view().pitch())
-        this.afterScene.view().setYaw(this.beforeScene.view().yaw())
-        this.afterScene.view().setFov(this.beforeScene.view().fov())
+        this.manageState(this.beforeScene, this.afterScene)
         return (this.currentScene = this.afterScene)
       case this.afterScene:
-        this.beforeScene.view().setPitch(this.afterScene.view().pitch())
-        this.beforeScene.view().setYaw(this.afterScene.view().yaw())
-        this.beforeScene.view().setFov(this.afterScene.view().fov())
+        this.manageState(this.afterScene, this.beforeScene)
         return (this.currentScene = this.beforeScene)
       default:
         return (this.currentScene = this.beforeScene)
     }
   }
 
-  changeScene = () => {
+  private readonly manageState = (currentScene, newScene): void => {
+    const pitch: number = currentScene.view().pitch()
+    const yaw: number = currentScene.view().yaw()
+    const fov: number = currentScene.view().fov()
+    newScene.view().setPitch(pitch)
+    newScene.view().setYaw(yaw)
+    newScene.view().setFov(fov)
+  }
+
+  public changeScene = (): void => {
     this.nextScene().switchTo({
-      transitionDuration: 3
+      transitionDuration: 1000
     })
 
   }
