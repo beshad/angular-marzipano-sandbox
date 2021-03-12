@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
   <a routerLink="/tiles">tiled</a>
   <a routerLink="/equirect">equirect</a>
+  <a routerLink="/transition">transition</a>
   <router-outlet></router-outlet>
   `
 })

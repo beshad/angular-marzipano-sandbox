@@ -22,7 +22,8 @@ body {
 }
 
 #pano,
-#tiles {
+#tiles,
+#transition {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -47,4 +48,18 @@ a {
     top: 10px;
     left: 100px;
   }
+
+  &:last-of-type {
+    top: 10px;
+    left: 250px;
+  }
+}
+
+button {
+  position: absolute;
+  z-index: 2;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  height: 40px;
 }
