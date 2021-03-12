@@ -1,48 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import * as Marzipano from 'marzipano'
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template:'<div #pano class="pano" id="pano"></div>'
+  template: `
+  <a routerLink="/tiles">tiled</a>
+  <a routerLink="/equirect">equirect</a>
+  <router-outlet></router-outlet>
+  `
 })
-export class AppComponent {
-
-  @ViewChild('pano') pano: ElementRef
-
-  constructor() { }
-
-  ngOnInit(): void { }
-
-  ngAfterViewInit(): void {
-
-    const panoElement = this.pano.nativeElement
-
-    var viewerOpts = {
-      controls: {
-        mouseViewMode: 'drag'
-      }
-    }
-
-    const viewer = new Marzipano.Viewer(panoElement, viewerOpts)
-
-    const limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180)
-    const view = new Marzipano.RectilinearView({ yaw: Math.PI }, limiter);
-
-    const geometry = new Marzipano.EquirectGeometry([{ width: 4000 }])
-
-    const source = Marzipano.ImageUrlSource.fromString("../assets/angra.jpg")
-    // var source = Marzipano.ImageUrlSource.fromString("../assets/tiles/pano/{z}/{y}/{x}.jpg")
-
-    const scene = viewer.createScene({
-      source: source,
-      geometry: geometry,
-      view: view,
-      pinFirstLevel: true
-    })
-
-    scene.switchTo()
-
-  }
-
-
-}
+export class AppComponent { }
