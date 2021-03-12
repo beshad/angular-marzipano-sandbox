@@ -47,8 +47,8 @@ export class TransitionComponent implements OnInit {
     // Create view.
     const limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180, 120 * Math.PI / 180)
 
-    const beforeSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/{z}/{f}/{y}/{x}.jpg", {
-      cubeMapPreviewUrl: "../../assets/tiles/preview.jpg"
+    const beforeSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/kop4/{z}/{f}/{y}/{x}.jpg", {
+      cubeMapPreviewUrl: "../../assets/tiles/kop4/preview.jpg"
     })
     const beforeView = new Marzipano.RectilinearView({
       "pitch": 0,
@@ -63,8 +63,8 @@ export class TransitionComponent implements OnInit {
       pinFirstLevel: true
     })
 
-    const afterSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/{z}/{f}/{y}/{x}.jpg", {
-      cubeMapPreviewUrl: "../../assets/tiles/preview.jpg"
+    const afterSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/kop5/{z}/{f}/{y}/{x}.jpg", {
+      cubeMapPreviewUrl: "../../assets/tiles/kop5/preview.jpg"
     })
     const afterView = new Marzipano.RectilinearView({
       "pitch": 0,

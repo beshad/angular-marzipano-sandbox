@@ -19,8 +19,8 @@ export class TilesComponent {
     const viewer = new Marzipano.Viewer(panoElement, { stage: { progressive: true } })
 
     // Create source.
-    const source = Marzipano.ImageUrlSource.fromString("../../assets/tiles/{z}/{f}/{y}/{x}.jpg", {
-      cubeMapPreviewUrl: "../../assets/tiles/preview.jpg"
+    const source = Marzipano.ImageUrlSource.fromString("../../assets/_tiles/{z}/{f}/{y}/{x}.jpg", {
+      cubeMapPreviewUrl: "../../assets/_tiles/preview.jpg"
     })
 
     // Create geometry.
