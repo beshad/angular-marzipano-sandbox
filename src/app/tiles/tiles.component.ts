@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as Marzipano from 'marzipano'
 
 @Component({
   selector: 'app-tiles',
   template: '<div #tiles id="tiles"></div>'
 })
-export class TilesComponent implements OnInit {
+export class TilesComponent {
+
+  @ViewChild('tiles') tiles: ElementRef
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
 
-    const panoElement = document.querySelector('#tiles')
+  ngAfterViewInit(): void {
+
+    const panoElement = this.tiles.nativeElement
     const viewer = new Marzipano.Viewer(panoElement, { stage: { progressive: true } })
 
     // Create source.
@@ -55,4 +59,5 @@ export class TilesComponent implements OnInit {
     // Display scene.
     scene.switchTo()
   }
+
 }
