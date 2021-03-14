@@ -8,10 +8,11 @@ export class TransitionService {
   constructor() { }
 
   public readonly manageState = (currentScene, newScene): void => {
-    const pitch: number = currentScene.view().pitch()
-    const yaw: number = currentScene.view().yaw()
-    newScene.view().setPitch(pitch)
-    newScene.view().setYaw(yaw)
+    newScene.view().setParameters({
+      pitch: currentScene.view().pitch(),
+      yaw: currentScene.view().yaw()
+    })
+    
   }
 
 }
