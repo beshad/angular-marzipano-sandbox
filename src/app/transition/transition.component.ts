@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild, Renderer2 } from '@angular/core'
 import * as Marzipano from 'marzipano'
 
 import { TransitionService } from '../transition.service'
@@ -12,68 +12,25 @@ import { TransitionService } from '../transition.service'
 })
 export class TransitionComponent implements OnInit {
 
-  @ViewChild('transition') transition: ElementRef
+  @ViewChild('transition') transition: ElementRef<HTMLInputElement>
 
-  public beforeScene
-  public afterScene
-  public currentScene
+  private beforeScene
+  private afterScene
+  private currentScene
 
-  constructor(private transitionService: TransitionService) { }
+  constructor(private transitionService: TransitionService, private renderer: Renderer2) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit(): void {
 
-    const panoElement = this.transition.nativeElement
-    const viewer = new Marzipano.Viewer(panoElement, { stage: { progressive: true } })
+    // useless, just for testing
+    this.renderer.setStyle(this.transition.nativeElement, 'border', '5px solid #f66')
 
-    // Create geometry.
-    const geometry = new Marzipano.CubeGeometry([
-      {
-        "tileSize": 256,
-        "size": 256,
-        "fallbackOnly": true
-      },
-      {
-        "tileSize": 512,
-        "size": 512
-      },
-      {
-        "tileSize": 512,
-        "size": 1024
-      }
-    ])
+    const viewer = new Marzipano.Viewer(this.transition.nativeElement, { stage: { progressive: true } })
 
-    // Create view.
-    const limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180, 120 * Math.PI / 180)
-
-    const beforeSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/kop4/{z}/{f}/{y}/{x}.jpg")
-    const beforeView = new Marzipano.RectilinearView({
-      "pitch": 0,
-      "yaw": 0,
-      "fov": .5707963267948966
-    }, limiter)
-
-    this.beforeScene = viewer.createScene({
-      source: beforeSource,
-      geometry: geometry,
-      view: beforeView,
-      pinFirstLevel: true
-    })
-
-    const afterSource = Marzipano.ImageUrlSource.fromString("../../assets/tiles/kop5/{z}/{f}/{y}/{x}.jpg")
-    const afterView = new Marzipano.RectilinearView({
-      "pitch": 0,
-      "yaw": 0,
-      "fov": .5707963267948966
-    }, limiter)
-
-    this.afterScene = viewer.createScene({
-      source: afterSource,
-      geometry: geometry,
-      view: afterView,
-      pinFirstLevel: true
-    })
+    this.beforeScene = this.transitionService.constructMarzipanoView(viewer, "../../assets/tiles/kop4/{z}/{f}/{y}/{x}.jpg")
+    this.afterScene = this.transitionService.constructMarzipanoView(viewer, "../../assets/tiles/kop5/{z}/{f}/{y}/{x}.jpg")
 
     this.nextScene().switchTo()
 
