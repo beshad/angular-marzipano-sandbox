@@ -7,7 +7,7 @@ import { TransitionService } from '../transition.service'
   selector: 'app-transition',
   template: `
   <div #transition id="transition"></div>
-  <button (click)="changeScene()">toggle</button>  
+  <button (click)="setScene()">toggle</button>  
   `
 })
 export class TransitionComponent implements OnInit {
@@ -16,7 +16,6 @@ export class TransitionComponent implements OnInit {
 
   private beforeScene
   private afterScene
-  private currentScene
 
   constructor(private transitionService: TransitionService, private renderer: Renderer2) { }
 
@@ -29,28 +28,16 @@ export class TransitionComponent implements OnInit {
 
     const viewer = new Marzipano.Viewer(this.transition.nativeElement, { stage: { progressive: true } })
 
-    this.beforeScene = this.transitionService.constructMarzipanoView(viewer, "../../assets/tiles/kop4/{z}/{f}/{y}/{x}.jpg")
-    this.afterScene = this.transitionService.constructMarzipanoView(viewer, "../../assets/tiles/kop5/{z}/{f}/{y}/{x}.jpg")
+    this.beforeScene = this.transitionService.createMarzipanoScene(viewer, "../../assets/tiles/kop4/{z}/{f}/{y}/{x}.jpg")
+    this.afterScene = this.transitionService.createMarzipanoScene(viewer, "../../assets/tiles/kop5/{z}/{f}/{y}/{x}.jpg")
 
-    this.nextScene().switchTo()
+    this.setScene()
 
   }
 
-  private readonly nextScene = () => {
-    switch (this.currentScene) {
-      case this.beforeScene:
-        this.transitionService.manageState(this.beforeScene, this.afterScene)
-        return (this.currentScene = this.afterScene)
-      case this.afterScene:
-        this.transitionService.manageState(this.afterScene, this.beforeScene)
-        return (this.currentScene = this.beforeScene)
-      default:
-        return (this.currentScene = this.beforeScene)
-    }
-  }
 
-  public changeScene = (): void => {
-    this.nextScene().switchTo({
+  public setScene = (): void => {
+    this.transitionService.nextScene(this.beforeScene, this.afterScene).switchTo({
       transitionDuration: 1000
     })
 
