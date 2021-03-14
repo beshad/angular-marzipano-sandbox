@@ -24,7 +24,7 @@ export class TransitionComponent implements OnInit {
 
   ngAfterViewInit(): void {
 
-    // useless, just for testing
+    //  just for testing
     this.renderer.setStyle(this.transition.nativeElement, 'border', '5px solid #f66')
 
     const viewer = new Marzipano.Viewer(this.transition.nativeElement, { stage: { progressive: true } })
@@ -35,7 +35,6 @@ export class TransitionComponent implements OnInit {
     this.nextScene().switchTo()
 
   }
-
 
   private readonly nextScene = () => {
     switch (this.currentScene) {

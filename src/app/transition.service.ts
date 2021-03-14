@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core'
+import { Injectable,ElementRef } from '@angular/core'
 import * as Marzipano from 'marzipano'
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransitionService {
-  
+
   private readonly limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180, 120 * Math.PI / 180)
 
   private readonly geometry = new Marzipano.CubeGeometry([
@@ -29,13 +30,13 @@ export class TransitionService {
     "yaw": 0,
     "fov": .5707963267948966
   }, this.limiter)
-  
+
   constructor() { }
 
-  constructMarzipanoView = (viewer, tile) => {
+  constructMarzipanoView = (viewer, tile:string) => {
 
     const source = Marzipano.ImageUrlSource.fromString(tile)
-    return  viewer.createScene({
+    return viewer.createScene({
       source,
       geometry: this.geometry,
       view: this.view,
